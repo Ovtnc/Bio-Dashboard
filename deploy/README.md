@@ -70,7 +70,19 @@ Backend kodu repoda yoksa, geliştirme makinenizden `backend` klasörünü sunuc
 
 ## 4. Sunucuda Docker
 
-Ubuntu örneği: [Docker Engine kurulumu](https://docs.docker.com/engine/install/ubuntu/) ve Docker Compose V2 (`docker compose`).
+Hızlı kurulum (root):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Ovtnc/Bio-Dashboard/main/deploy/scripts/install-docker-ubuntu.sh -o /tmp/install-docker-ubuntu.sh
+sudo bash /tmp/install-docker-ubuntu.sh
+```
+
+Ayrıntı: [Docker Engine — Ubuntu](https://docs.docker.com/engine/install/ubuntu/). Komut `docker compose` (V2 eklentisi) sağlar.
+
+### Git / `git pull` hataları
+
+- **Public repo** için `git pull origin main` genelde **kimlik istemez**. İstem çıkarsa Enter’a basıp çıkmayın; talimat metnini **kullanıcı adı** alanına yapıştırmayın (GitHub “Invalid username” verir).
+- **Şifre ile push/pull** GitHub’da kapalıdır; özel repoda **PAT** veya **SSH anahtarı** kullanın.
 
 ## 5. Ortam dosyası
 
