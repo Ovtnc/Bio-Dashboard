@@ -13,7 +13,34 @@ Alan adı sağlayıcınızda:
 
 Yayılması birkaç dakika ile 48 saat arasında sürebilir.
 
-## 2. Sunucuda yeni proje + Git’ten yükleme
+## 2. Tek komut: otomatik kurulum (`.env` dahil)
+
+Eski `.env` silinir; `AUTH_SECRET`, `JWT_SECRET`, `POSTGRES_PASSWORD` rastgele üretilir; Docker kurulu değilse kurulur; stack build + `up -d` çalışır.
+
+**Zorunlu:** `../backend` yoksa `BACKEND_REPO` verin (FastAPI Dockerfile içeren repo).
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Ovtnc/Bio-Dashboard/main/deploy/scripts/bootstrap-full-stack.sh -o /tmp/bootstrap-full-stack.sh
+sudo BACKEND_REPO="https://github.com/KULLANICI/backend.git" bash /tmp/bootstrap-full-stack.sh
+```
+
+Domain’i değiştirmek için: `DOMAIN=ornek.com` ön ekleyin. Sadece HTTP ile denemek: `USE_HTTP=1`.
+
+**Tam sıfırlama** (Postgres/Redis volume + `bio-dash` ve `backend` klasörleri silinir, yeniden klonlanır):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Ovtnc/Bio-Dashboard/main/deploy/scripts/bootstrap-full-stack.sh -o /tmp/bootstrap-full-stack.sh
+sudo BACKEND_REPO="https://github.com/KULLANICI/backend.git" bash /tmp/bootstrap-full-stack.sh --factory-reset
+```
+
+Repoyu zaten indirdiyseniz:
+
+```bash
+cd /opt/bio-dash-live/bio-dash
+sudo BACKEND_REPO="..." bash deploy/scripts/bootstrap-full-stack.sh
+```
+
+## 3. Sunucuda yeni proje + Git’ten yükleme (manuel)
 
 Örnek: tüm uygulama `/opt/bio-dash-live` altında dursun (istediğiniz yolu `PROJECT_ROOT` ile değiştirebilirsiniz).
 
@@ -56,7 +83,7 @@ export FRONTEND_DIR="bio-dash"
 bash deploy/scripts/init-from-git.sh
 ```
 
-## 3. Sunucu dizin yapısı
+## 4. Sunucu dizin yapısı
 
 `docker-compose.yml` içinde backend imajı `../backend` klasöründen build edilir. Önerilen yapı:
 
@@ -68,7 +95,7 @@ bash deploy/scripts/init-from-git.sh
 
 Backend kodu repoda yoksa, geliştirme makinenizden `backend` klasörünü sunucuya kopyalayın veya ayrı bir git deposu kullanın (`BACKEND_REPO` ile betik veya ikinci `git clone`).
 
-## 4. Sunucuda Docker
+## 5. Sunucuda Docker
 
 Hızlı kurulum (root):
 
@@ -84,7 +111,7 @@ Ayrıntı: [Docker Engine — Ubuntu](https://docs.docker.com/engine/install/ubu
 - **Public repo** için `git pull origin main` genelde **kimlik istemez**. İstem çıkarsa Enter’a basıp çıkmayın; talimat metnini **kullanıcı adı** alanına yapıştırmayın (GitHub “Invalid username” verir).
 - **Şifre ile push/pull** GitHub’da kapalıdır; özel repoda **PAT** veya **SSH anahtarı** kullanın.
 
-## 5. Ortam dosyası
+## 6. Ortam dosyası
 
 ```bash
 cd /opt/bio-dash-live/bio-dash
@@ -96,7 +123,7 @@ nano .env   # AUTH_SECRET, JWT_SECRET, POSTGRES_PASSWORD vb.
 - `FRONTEND_PORT` / `BACKEND_PORT` vb. için `docker-compose.yml` container portunu kendisi ekler. `.env` içinde **`127.0.0.1:3001`** yazın, **`127.0.0.1:3001:3000` yazmayın** (Compose “invalid IP address” verir).
 - İlk kurulumda `docker-compose.yml` içindeki Postgres şifresi varsayılan `postgres` ise, `.env` içinde `POSTGRES_PASSWORD` değiştirirseniz **tüm `DATABASE_URL` tanımlarını** `docker-compose.yml` içinde elle aynı şifreyle güncellemeniz gerekir; aksi halde varsayılan `postgres` ile devam edin.
 
-## 6. Konteynerleri ayağa kaldırma
+## 7. Konteynerleri ayağa kaldırma
 
 ```bash
 cd /opt/bio-dash-live/bio-dash
@@ -105,7 +132,7 @@ docker compose -f docker-compose.yml -f deploy/compose.production.yml --env-file
 
 İlk build birkaç dakika sürebilir. Log: `docker compose logs -f frontend backend`.
 
-## 7. Host Nginx + TLS
+## 8. Host Nginx + TLS
 
 ```bash
 sudo apt update && sudo apt install -y nginx
@@ -123,7 +150,7 @@ sudo certbot --nginx -d ore-oar.online -d www.ore-oar.online
 
 Certbot, yapılandırmaya `listen 443` ve SSL satırlarını ekler. Sonrasında `NEXTAUTH_URL=https://ore-oar.online` ile çerezler güvenli modda çalışır.
 
-## 8. Güvenlik duvarı (önerilir)
+## 9. Güvenlik duvarı (önerilir)
 
 ```bash
 sudo ufw allow OpenSSH
@@ -133,7 +160,7 @@ sudo ufw enable
 
 Postgres/Redis/uygulama portları yalnızca `127.0.0.1`’e bağlı olduğu için dışarıdan erişilmez.
 
-## 9. Güncelleme
+## 10. Güncelleme
 
 ```bash
 cd /opt/bio-dash-live/bio-dash

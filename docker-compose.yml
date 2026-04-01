@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_DB: bio_dash
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     ports:
       - "${POSTGRES_PORT:-5433}:5432"
     volumes:
@@ -39,7 +39,7 @@ services:
     container_name: bio-dash-backend
     restart: always
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/bio_dash?options=-csearch_path%3Dpublic
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/bio_dash?options=-csearch_path%3Dpublic
       AUTH_SECRET: ${AUTH_SECRET}
       JWT_SECRET: ${JWT_SECRET}
       JWT_ROTATION_EPOCH: ${JWT_ROTATION_EPOCH:-}
@@ -84,7 +84,7 @@ services:
         "--concurrency=2",
       ]
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/bio_dash?options=-csearch_path%3Dpublic
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/bio_dash?options=-csearch_path%3Dpublic
       AUTH_SECRET: ${AUTH_SECRET}
       JWT_SECRET: ${JWT_SECRET}
       JWT_ROTATION_EPOCH: ${JWT_ROTATION_EPOCH:-}
@@ -108,7 +108,7 @@ services:
         NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000}
     container_name: bio-dash-frontend-migrate
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/bio_dash?schema=public
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/bio_dash?schema=public
     depends_on:
       postgres:
         condition: service_healthy
@@ -128,7 +128,7 @@ services:
     restart: always
     environment:
       NODE_ENV: production
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/bio_dash?schema=public
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/bio_dash?schema=public
       NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3001}
       AUTH_SECRET: ${AUTH_SECRET}
       JWT_SECRET: ${JWT_SECRET}
