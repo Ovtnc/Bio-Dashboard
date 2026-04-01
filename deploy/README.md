@@ -93,6 +93,7 @@ nano .env   # AUTH_SECRET, JWT_SECRET, POSTGRES_PASSWORD vb.
 ```
 
 - `NEXT_PUBLIC_API_BASE_URL` ve `NEXTAUTH_URL` domain ile uyumlu olmalı (`https://ore-oar.online/...`).
+- `FRONTEND_PORT` / `BACKEND_PORT` vb. için `docker-compose.yml` container portunu kendisi ekler. `.env` içinde **`127.0.0.1:3001`** yazın, **`127.0.0.1:3001:3000` yazmayın** (Compose “invalid IP address” verir).
 - İlk kurulumda `docker-compose.yml` içindeki Postgres şifresi varsayılan `postgres` ise, `.env` içinde `POSTGRES_PASSWORD` değiştirirseniz **tüm `DATABASE_URL` tanımlarını** `docker-compose.yml` içinde elle aynı şifreyle güncellemeniz gerekir; aksi halde varsayılan `postgres` ile devam edin.
 
 ## 6. Konteynerleri ayağa kaldırma

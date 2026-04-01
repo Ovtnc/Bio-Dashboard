@@ -2,11 +2,8 @@
 # Kullanım (bio-dash klasöründe, backend ../backend ile yan yana olmalı):
 #   docker compose -f docker-compose.yml -f deploy/compose.production.yml --env-file .env up -d --build
 #
-# Portları sadece localhost'a bağlamak için .env içinde tanımlayın (deploy/env.production.example):
-#   FRONTEND_PORT=127.0.0.1:3001:3000
-#   BACKEND_PORT=127.0.0.1:8000:8000
-#   POSTGRES_PORT=127.0.0.1:5433:5432
-#   REDIS_PORT=127.0.0.1:6379:6379
+# Portları sadece localhost'a bağlamak için .env içinde tanımlayın (deploy/env.production.example).
+# Ana compose dosyası container portunu eklediği için sadece host:host_port kullanın, örn. FRONTEND_PORT=127.0.0.1:3001
 #
 # Not: NEXT_PUBLIC_* istemci bundle'a build sırasında girer; domain değişirse --build şart.
 
