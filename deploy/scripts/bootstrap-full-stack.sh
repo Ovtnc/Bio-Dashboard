@@ -35,11 +35,20 @@ if [[ "${EUID}" -ne 0 ]]; then
   exit 1
 fi
 
+# Silinen dizinde kalmayı önle (factory-reset sonrası "Unable to read current working directory")
+cd /
+
 DOMAIN="${DOMAIN:-ore-oar.online}"
 PROJECT_ROOT="${PROJECT_ROOT:-/opt/bio-dash-live}"
 FRONTEND_DIR="${FRONTEND_DIR:-bio-dash}"
 FRONTEND_REPO="${FRONTEND_REPO:-https://github.com/Ovtnc/Bio-Dashboard.git}"
 BACKEND_REPO="${BACKEND_REPO:-}"
+
+if [[ -n "${BACKEND_REPO}" ]] && [[ "${BACKEND_REPO}" =~ (SENIN|KULLANICI|your-backend|YOUR_|example\.com) ]]; then
+  echo "HATA: BACKEND_REPO örnek bir adres gibi duruyor: ${BACKEND_REPO}"
+  echo "Gerçek repo URL'si yazın veya BACKEND_REPO boş bırakıp önce scp ile backend atın."
+  exit 1
+fi
 
 FRONTEND_PATH="${PROJECT_ROOT}/${FRONTEND_DIR}"
 BACKEND_PATH="${PROJECT_ROOT}/backend"
@@ -70,6 +79,7 @@ compose_down_safe() {
 if [[ "$FACTORY_RESET" -eq 1 ]]; then
   compose_down_safe
   echo "==> Factory reset: volume'lar ve proje klasörleri siliniyor..."
+  cd /
   docker volume rm bio-dash_bio_dash_pg_data bio-dash_bio_dash_redis_data bio-dash_bio_dash_final_data 2>/dev/null || true
   rm -rf "${FRONTEND_PATH}" "${BACKEND_PATH}"
 fi
@@ -79,7 +89,7 @@ install_docker_if_needed
 
 if [[ ! -d "${FRONTEND_PATH}/.git" ]]; then
   echo "==> Ön yüz klonlanıyor..."
-  git clone "${FRONTEND_REPO}" "${FRONTEND_PATH}"
+  GIT_TERMINAL_PROMPT=0 git clone "${FRONTEND_REPO}" "${FRONTEND_PATH}"
 else
   echo "==> Ön yüz güncelleniyor..."
   git -C "${FRONTEND_PATH}" pull --ff-only origin main || git -C "${FRONTEND_PATH}" pull --ff-only
@@ -88,7 +98,7 @@ fi
 if [[ ! -d "${BACKEND_PATH}/.git" ]] && [[ ! -f "${BACKEND_PATH}/Dockerfile" ]]; then
   if [[ -n "${BACKEND_REPO}" ]]; then
     echo "==> Backend klonlanıyor..."
-    git clone "${BACKEND_REPO}" "${BACKEND_PATH}"
+    GIT_TERMINAL_PROMPT=0 git clone "${BACKEND_REPO}" "${BACKEND_PATH}"
   else
     echo ""
     echo "HATA: ${BACKEND_PATH} yok ve BACKEND_REPO tanımlı değil."
