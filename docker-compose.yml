@@ -135,6 +135,8 @@ services:
       JWT_ROTATION_EPOCH: ${JWT_ROTATION_EPOCH:-}
       AUTH_GOOGLE_ID: ${AUTH_GOOGLE_ID:-}
       AUTH_GOOGLE_SECRET: ${AUTH_GOOGLE_SECRET:-}
+      # Server-side proxy to FastAPI (must be Docker service name, not public URL)
+      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8000}
       NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000}
     ports:
       - "${FRONTEND_PORT:-3001}:3000"

@@ -10,7 +10,13 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   output: "standalone",
-  allowedDevOrigins: ["localhost", "127.0.0.1", "192.168.1.112"],
+  allowedDevOrigins: [
+    "localhost",
+    "127.0.0.1",
+    "192.168.1.112",
+    "ore-oar.online",
+    "www.ore-oar.online",
+  ],
   async headers() {
     return [
       {
