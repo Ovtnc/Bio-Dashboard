@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AnalysisType {
+  RNA_SEQ
+  DNA_SEQ
+}
+
+enum AnalysisStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  name         String
+  role         String    @default("Researcher")
+  image        String?
+  passwordHash String?
+  projects     Project[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Project {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String?
+  userId      Int
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  analyses    Analysis[]
+  files       File[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([userId])
+}
+
+model Analysis {
+  id           Int            @id @default(autoincrement())
+  type         AnalysisType
+  status       AnalysisStatus @default(PENDING)
+  currentStep  String         @default("Queued")
+  progress     Int            @default(0)
+  errorMessage String?
+  result       Json?
+  projectId    Int
+  project      Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@index([projectId])
+}
+
+model File {
+  id        Int      @id @default(autoincrement())
+  name      String
+  size      BigInt
+  type      String
+  path      String
+  status    String   @default("UPLOADED")
+  is_public Boolean  @default(false)
+  share_token String? @unique
+  projectId Int
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId])
+}

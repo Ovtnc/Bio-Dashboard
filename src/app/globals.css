@@ -128,3 +128,336 @@
     @apply font-sans;
   }
 }
+
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@page {
+  size: A4 portrait;
+  margin: 15mm;
+}
+
+@media print {
+  *,
+  *::before,
+  *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html,
+  body {
+    width: 100% !important;
+    min-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-family: "Times New Roman", "Georgia", serif !important;
+  }
+
+  [data-app-sidebar],
+  [data-app-header],
+  [data-analysis-navigator],
+  [data-print-hide],
+  [data-sonner-toaster] {
+    display: none !important;
+  }
+
+  [data-report-page] {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+  }
+
+  [data-report-section] {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+  }
+
+  [data-pdf-block] {
+    break-inside: avoid-page !important;
+    page-break-inside: avoid !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    margin-bottom: 2rem !important;
+  }
+
+  [data-report-page] [data-slot="card-header"],
+  [data-report-page] [data-slot="card-content"] {
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  [data-report-page] .text-muted-foreground {
+    color: #475569 !important;
+  }
+
+  [data-report-page] .bg-muted\/20,
+  [data-report-page] .bg-background\/80,
+  [data-report-page] .bg-card,
+  [data-report-page] .bg-background {
+    background: #ffffff !important;
+  }
+
+  [data-report-page] .border,
+  [data-report-page] .border-zinc-300\/70 {
+    border-color: #cbd5e1 !important;
+  }
+
+  .js-plotly-plot,
+  svg,
+  canvas,
+  table {
+    break-inside: avoid-page !important;
+    page-break-inside: avoid !important;
+  }
+
+  [data-pdf-3d],
+  [data-pdf-3d] canvas {
+    visibility: visible !important;
+    position: relative !important;
+    display: block !important;
+    opacity: 1 !important;
+  }
+
+  [data-report-page] .js-plotly-plot text {
+    fill: #0f172a !important;
+  }
+
+  [data-report-page] .js-plotly-plot .gridlayer path {
+    stroke: #cbd5e1 !important;
+  }
+
+  [data-report-page] .js-plotly-plot .zerolinelayer path {
+    stroke: #94a3b8 !important;
+  }
+
+  [data-report-page] table {
+    width: 100% !important;
+    table-layout: auto !important;
+    font-size: 9pt !important;
+    background: #ffffff !important;
+  }
+
+  [data-report-page] th,
+  [data-report-page] td {
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    vertical-align: middle !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+  }
+
+  [data-report-page] a {
+    color: #1d4ed8 !important;
+    text-decoration: underline !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
+
+.print-layout-active [data-app-sidebar],
+.print-layout-active [data-app-header],
+.print-layout-active [data-analysis-navigator],
+.print-layout-active [data-print-hide],
+.print-layout-active [data-sonner-toaster] {
+  display: none !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-app-sidebar],
+:is(.pdf-export-active, .print-mode) [data-app-header],
+:is(.pdf-export-active, .print-mode) [data-analysis-navigator],
+:is(.pdf-export-active, .print-mode) [data-print-hide],
+:is(.pdf-export-active, .print-mode) [data-sonner-toaster] {
+  display: none !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-report-page],
+:is(.pdf-export-active, .print-mode) [data-report-section] {
+  background: #ffffff !important;
+  color: #1a1a1a !important;
+  font-family: "Times New Roman", "Times", serif !important;
+}
+
+:is(.pdf-export-active, .print-mode),
+:is(.pdf-export-active, .print-mode) :root,
+:is(.pdf-export-active, .print-mode) .dark {
+  --background: #ffffff !important;
+  --foreground: #1a1a1a !important;
+  --card: #ffffff !important;
+  --card-foreground: #1a1a1a !important;
+  --popover: #ffffff !important;
+  --popover-foreground: #1a1a1a !important;
+  --primary: #1a1a1a !important;
+  --primary-foreground: #ffffff !important;
+  --secondary: #f1f5f9 !important;
+  --secondary-foreground: #1a1a1a !important;
+  --muted: #f8fafc !important;
+  --muted-foreground: #475569 !important;
+  --accent: #e2e8f0 !important;
+  --accent-foreground: #1a1a1a !important;
+  --destructive: #dc2626 !important;
+  --border: #e2e8f0 !important;
+  --input: #cbd5e1 !important;
+  --ring: #94a3b8 !important;
+  --sidebar: #ffffff !important;
+  --sidebar-foreground: #1a1a1a !important;
+  --sidebar-primary: #1a1a1a !important;
+  --sidebar-primary-foreground: #ffffff !important;
+  --sidebar-accent: #e2e8f0 !important;
+  --sidebar-accent-foreground: #1a1a1a !important;
+  --sidebar-border: #e2e8f0 !important;
+  --sidebar-ring: #94a3b8 !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-pdf-block] {
+  background: #ffffff !important;
+  color: #1a1a1a !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  margin-bottom: 2rem !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-report-page] [data-slot="card-header"],
+:is(.pdf-export-active, .print-mode) [data-report-page] [data-slot="card-content"],
+:is(.pdf-export-active, .print-mode) [data-report-page] .bg-muted\/20,
+:is(.pdf-export-active, .print-mode) [data-report-page] .bg-background\/80,
+:is(.pdf-export-active, .print-mode) [data-report-page] .bg-card,
+:is(.pdf-export-active, .print-mode) [data-report-page] .bg-background {
+  background: #ffffff !important;
+  color: #1a1a1a !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-report-page] [data-slot="card-header"] {
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-report-page] .text-muted-foreground {
+  color: #475569 !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-report-page] table {
+  background: #ffffff !important;
+  table-layout: fixed !important;
+  font-size: 9pt !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-report-page] th,
+:is(.pdf-export-active, .print-mode) [data-report-page] td {
+  color: #1a1a1a !important;
+  border-color: #e2e8f0 !important;
+  height: 30px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  vertical-align: middle !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-report-page] thead {
+  display: table-header-group !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-report-page] tbody tr {
+  break-inside: avoid-page !important;
+  page-break-inside: avoid !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-report-page] tbody tr:nth-child(even) {
+  background: #f8fafc !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-report-page] th {
+  background: #f8fafc !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-report-paired-grid] {
+  align-items: flex-start !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-report-paired-grid] > [data-pdf-block] {
+  height: auto !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-pdf-title="3D Klinik Model"] [data-slot="card-content"] {
+  height: auto !important;
+  display: block !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-pdf-title="3D Klinik Model"] [data-pdf-3d] {
+  min-height: 260px !important;
+  height: 260px !important;
+  flex: 0 0 auto !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-pdf-table-avoid="true"] {
+  break-inside: avoid-page !important;
+  page-break-inside: avoid !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-methods-grid] {
+  display: block !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-pdf-snapshot-img] {
+  display: block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  max-width: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  object-fit: contain !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-pathway-flow] {
+  justify-content: space-around !important;
+}
+
+:is(.pdf-export-active, .print-mode) .js-plotly-plot {
+  max-height: 400px !important;
+  height: 400px !important;
+}
+
+[data-pdf-fallback] {
+  display: none;
+}
+
+:is(.pdf-export-active, .print-mode) [data-pdf-3d-live] {
+  display: none !important;
+}
+
+:is(.pdf-export-active, .print-mode) [data-pdf-fallback] {
+  display: block !important;
+}
+
+[data-pdf-snapshot-img]:not([src]),
+[data-pdf-snapshot-img][src=""] {
+  display: none;
+}
+
+:is(.pdf-export-active, .print-mode) .no-print {
+  display: none !important;
+}
